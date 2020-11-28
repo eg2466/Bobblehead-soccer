@@ -18,16 +18,22 @@ function preload(){
     bg = loadImage('../assets/bkg.png');
     fb_img = loadImage('../assets/SoccerBall.png');
     tile_img = loadImage('../assets/Tile.png');
-    net_1_img = loadImage('../assets/net_1.png');
-    net_2_img = loadImage('../assets/net_2.png');
-    net_1_img_s = loadImage('../assets/net_1_s.png');
-    net_2_img_s = loadImage('../assets/net_2_s.png');
+    leftnet_left_pole_img = loadImage('../assets/net/left_pole.png');
+    leftnet_bottom_pole_img = loadImage('../assets/net/bottom_pole.png');
+    leftnet_right_pole_img = loadImage('../assets/net/right_pole.png');
+    leftnet_top_pole_img = loadImage('../assets/net/top_pole.png');
+    leftnet_net_img = loadImage('../assets/net/net.png');
+//    net_1_img = loadImage('../assets/net_1.png');
+//    net_2_img = loadImage('../assets/net_2.png');
+//    net_1_img_s = loadImage('../assets/net_1_s.png');
+//    net_2_img_s = loadImage('../assets/net_2_s.png');
     head_img = loadImage('../assets/head.png');
     shoe_img = loadImage('../assets/shoe.png');
 }
 
 function setup() {
-    createCanvas(1200, 600);
+//    createCanvas(1200, 600);
+    createCanvas(windowWidth, windowHeight);
     
     image(net_2_img, 1000, 400);
     
@@ -66,7 +72,7 @@ function setup() {
     
     for(var j=0; j<16; j++)
       {
-        tile = createSprite((80*j), 560);
+        tile = createSprite((80*j), windowHeight-40);
         tile.addImage('tile', tile_img);
         //setting immovable to true makes the sprite immune to bouncing and displacements
         //as if with infinite mass
@@ -121,7 +127,7 @@ function draw() {
 //    head_sprite.bounce(btm_tile)
     head_sprite.velocity.y += 1;
     head_sprite.velocity.x = 0;
-    if(head_sprite.position.y>465){
+    if(head_sprite.position.y>windowHeight-200){
         head_sprite.velocity.y = 0;
       }
     
@@ -155,4 +161,9 @@ function draw() {
 //    drawSprite(tile);
     
     
+}
+
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
