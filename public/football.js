@@ -1,4 +1,26 @@
-    function make_football() { 
+//class Football {
+//    
+//  constructor(name, wd, ht) {
+//    this.name = name;
+//    this.wd = wd;
+//    this.ht = ht;
+//  }
+//    
+//  display() {
+//    createSprite(this.wd,this.ht);
+//    this.addImage('football', fb_img);
+//  }    
+//
+//  move() {
+//  }
+//
+//
+//}
+
+
+
+
+function make_football() { 
     
         //football
         football = createSprite(600,100);
@@ -7,10 +29,8 @@
         football.setSpeed(10, 90);
         football.scale = 0.6;
         football.mass = 5;
-//        football.friction = 0.05;
-//        football.restitution = 0.5;
     
-    }
+}
 
 
 function draw_football(){
@@ -29,14 +49,11 @@ function draw_football(){
     
     
     if(football.collide(btm_tile)) {
-//      football.position.y = height-95;
-//        football.velocity.y = 0
       football.velocity.y = -0.8 * abs(football.velocity.y);
     }
     
     
     if(football.position.y<0) {
-//      football.position.x = 10;
       football.velocity.y = abs(football.velocity.y);
     }
     
@@ -51,8 +68,6 @@ function draw_football(){
     if(football.collide(leftnet_left_pole)) {
 //      removeSprite(football);
     }    
-    
-    
     
 
     if(football.position.x > windowWidth-10) {

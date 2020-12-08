@@ -53,8 +53,10 @@ function resetGame () {
 
 function preload(){
     bg = loadImage('../assets/bkg.png');
-    fb_img = loadImage('../assets/SoccerBall.png');
+    
     tile_img = loadImage('../assets/Tile.png');
+    
+    fb_img = loadImage('../assets/SoccerBall.png');
     
     leftnet_left_pole_img = loadImage('../assets/net/left_pole.png');
     leftnet_bottom_pole_img = loadImage('../assets/net/bottom_pole.png');
@@ -62,10 +64,10 @@ function preload(){
     leftnet_top_pole_img = loadImage('../assets/net/top_pole.png');
     leftnet_net_img = loadImage('../assets/net/net.png');
     
-    rightnet_right_pole_img = loadImage('../assets/net/right/right_pole.png');
-    rightnet_bottom_pole_img = loadImage('../assets/net/right/bottom_pole.png');
-    rightnet_left_pole_img = loadImage('../assets/net/right/left_pole.png');
-    rightnet_top_pole_img = loadImage('../assets/net/right/top_pole.png');
+    rightnet_right_pole_img = loadImage('../assets/net/right/r_right_pole.png');
+    rightnet_bottom_pole_img = loadImage('../assets/net/right/r_bottom_pole.png');
+    rightnet_left_pole_img = loadImage('../assets/net/right/r_left_pole.png');
+    rightnet_top_pole_img = loadImage('../assets/net/right/r_top_pole.png');
     rightnet_net_img = loadImage('../assets/net/right/right_net.png');
  
     
@@ -84,11 +86,13 @@ function preload(){
 function setup() {
     
     createCanvas(windowWidth, windowHeight);
-
+    
+    
     add_make_tile();
     make_head_kick();
     net_setup();
     setup_scoreboard()
+    
     
     make_football();   
 
