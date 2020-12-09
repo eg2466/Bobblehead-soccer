@@ -5,6 +5,10 @@ let net_1;
 let net_1_sprite;
 
 let btm_tile;
+
+
+let platform;
+let platform_tile;
     
 //left net
 let leftnet_left_pole_img;
@@ -32,9 +36,11 @@ let rightnet_left_pole;
 let rightnet_top_pole;
 let rightnet_net;
 
-
+let bonus_img;
+let bonus_2_img;
 
 let head_sprite;
+let bothead_sprite;
 let shoe_sprite;
 
 let ball_y;
@@ -44,6 +50,8 @@ let ball_gravity = 0.2;
 var kick_frames;
 
 let gameState = "start";
+
+let random_x_val_bonus;
 
 function resetGame () {
     gameState = "start";
@@ -70,6 +78,10 @@ function preload(){
     rightnet_top_pole_img = loadImage('../assets/net/right/r_top_pole.png');
     rightnet_net_img = loadImage('../assets/net/right/right_net.png');
  
+    bonus_1_img = loadImage('../assets/bonus_1.png');
+    bonus_2_img = loadImage('../assets/bonus_2.png');
+    
+    bonus_img = loadAnimation('../assets/bonus_1.png', '../assets/bonus_2.png');
     
     kick_sprite_sheet = loadSpriteSheet('../assets/kicksprite.png', kick_frames);
     
@@ -87,11 +99,15 @@ function setup() {
     
     createCanvas(windowWidth, windowHeight);
     
+    random_x_val_bonus = random(350, width-350);
     
     add_make_tile();
     make_head_kick();
+    make_bot_head_kick();
     net_setup();
-    setup_scoreboard()
+    setup_scoreboard();
+    
+    platform_setup();
     
     
     make_football();   
@@ -105,11 +121,15 @@ function draw() {
     background(bg);
     
     head_kick_draw();
-    draw_football()
-    net_draw() 
+    draw_football();;
+    net_draw();
+    
+    bonus_draw();
     
     drawSprites();
     draw_scoreboard();
+    
+    
 }
 
 

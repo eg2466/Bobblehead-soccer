@@ -18,4 +18,12 @@ function draw_scoreboard() {
     text(player1_score, 42, 60);
     text(player2_score, windowWidth-58, 60);
     pop();
+    
+    if(football.collide(rightnet_right_pole)) {
+      player1_score += 1;
+    }
+    
+    if(football.collide(leftnet_left_pole)) {
+      player2_score += 1;
+    }
 }

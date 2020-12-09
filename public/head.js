@@ -27,6 +27,8 @@ function make_head_kick(){
 
 
 
+
+
 function head_kick_draw(){
     
 //    head_sprite.bounce(leftnet_top_pole)
@@ -68,4 +70,19 @@ if(head_sprite.collide(btm_tile)) {
         head_sprite.velocity.x = -7;
     }
     
+}
+
+
+
+
+function make_bot_head_kick(){
+        //head
+    bothead_sprite = createSprite(width-160, height-120);
+        bothead_sprite.mirrorX(-1);
+    bothead_sprite.setCollider('circle', 0, 0, 35);
+    bothead_sprite.addAnimation('kick', player_kick);
+    bothead_sprite.addAnimation('stand', player_stand);
+    bothead_sprite.scale = 0.9;
+
+    bothead_sprite.immovable = true;
 }

@@ -36,6 +36,8 @@ function make_football() {
 function draw_football(){
 //    football.bounce(btm_tile);
     football.bounce(head_sprite);
+    football.bounce(bothead_sprite);
+   football.bounce(platform_tile);
     
     football.bounce(leftnet_left_pole);
     football.bounce(leftnet_bottom_pole);
@@ -65,8 +67,9 @@ function draw_football(){
     
     
     //function to remove football and increase score
-    if(football.collide(leftnet_left_pole)) {
-//      removeSprite(football);
+    if(football.collide(rightnet_right_pole)) {
+        console.log('touch right pole')
+      remove(football);
     }    
     
 
