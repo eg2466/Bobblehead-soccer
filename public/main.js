@@ -1,4 +1,6 @@
 var football;
+let ball_kick_sound;
+
 var tile;
 let bg;
 let net_1;
@@ -6,9 +8,13 @@ let net_1_sprite;
 
 let btm_tile;
 
+let ball_gravity = 0.3;
 
 let platform;
+let platform_1;
 let platform_tile;
+
+let timerValue = 10;
     
 //left net
 let leftnet_left_pole_img;
@@ -37,34 +43,82 @@ let rightnet_top_pole;
 let rightnet_net;
 
 let bonus_img;
+let bonus_sprite;
 let bonus_2_img;
+let power_up_arr = [];
+
+let bb_img;
+
+let lastTrigger_3 = 0 ;
+
+let player_head_sprite;
+let bot_head_sprite;
+
+let head_acc = 7;
 
 let head_sprite;
 let bothead_sprite;
 let shoe_sprite;
 
+let football_sprite;
+
+let football_arr = [];
+
 let ball_y;
 let ball_y_speed;
-let ball_gravity = 0.2;
+//let ball_grav;
 
 var kick_frames;
+var kick_frames_1;
 
 let gameState = "start";
 
 let random_x_val_bonus;
+let random_power_up_num;
+let power_up_type;
 
-function resetGame () {
+let game_font;
+
+
+let game_10_btn;
+let game_timer_btn;
+
+let green_head_img;
+let red_head_img;
+
+let ball_bounce_sd;
+let goal_post_sd;
+let goal_scream_sd;
+let goal_whis_sd;
+let mm_sd;
+let stadium_sd;
+
+
+
+function resetGame() {
     gameState = "start";
     player1_score = 0;
     player2_score = 0;
 }
 
+
+
 function preload(){
+    
+    
+    
+    //-------------------------- IMAGES -------------------------
     bg = loadImage('./assets/bkg.png');
     
     tile_img = loadImage('./assets/Tile.png');
     
+    green_head_img = loadImage('./assets/green_head.png');
+    red_head_img = loadImage('./assets/red_head.png');
+    
     fb_img = loadImage('./assets/SoccerBall.png');
+    bb_img = loadImage('./assets/basketBall.png');
+    
+    game_font = loadFont('./assets/manaspc.ttf');
     
     leftnet_left_pole_img = loadImage('./assets/net/left_pole.png');
     leftnet_bottom_pole_img = loadImage('./assets/net/bottom_pole.png');
@@ -90,27 +144,120 @@ function preload(){
     player_stand = loadAnimation(new SpriteSheet('./assets/kicksprite.png',
     [{'name':'player_stand', 'frame':{'x':0, 'y': 0, 'width': 65, 'height': 76}} ]));
     
+    
+    kick_sprite_sheet_1 = loadSpriteSheet('./assets/kicksprite_1.png', kick_frames);
+    
+    player_kick_1 = loadAnimation(kick_sprite_sheet_1);
+     
+    player_stand_1 = loadAnimation(new SpriteSheet('./assets/kicksprite_1.png',
+    [{'name':'player_stand', 'frame':{'x':0, 'y': 0, 'width': 65, 'height': 76}} ]));
+    
+    //==========================================================
+    
+    
+    //-------------------------- SOUND -------------------------
+    // source: http://freesoundeffect.net/sound/soccer-ball-kick-ball-4-sound-effect
+    ball_kick_sound = loadSound('./assets/sound/ball_kick.mp3');
+    
+    ball_bounce_sd = loadSound('./assets/sound/ball_bounce.wav');
+    goal_post_sd = loadSound('./assets/sound/goal_post.wav');
+    goal_scream_sd = loadSound('./assets/sound/goal_scream.wav');
+    goal_whis_sd = loadSound('./assets/sound/goal_whis.wav');
+    mm_sd = loadSound('./assets/sound/main_menu.mp3');
+    stadium_sd = loadSound('./assets/sound/stadium_sound.wav');
+    
+    
+    //==========================================================
+    
 }
 
 
 
 
 function setup() {
-    
+
     createCanvas(windowWidth, windowHeight);
+//    print("window " + windowHeight);  
     
-    random_x_val_bonus = random(350, width-350);
+    if (gameState === 'start'){
+        mm_sd.play();
+//        createCanvas(windowWidth, windowHeight);
+        game_10_btn = new Clickable();
+        game_10_btn.resize(300, 100)
+        game_10_btn.cornerRadius = 10;
+        game_10_btn.strokeWeight = 2;
+        game_10_btn.stroke = "#ffffff"; 
+        game_10_btn.color = "#ffffff";
+
+        game_10_btn.text = "FIRST TO 10";
+        game_10_btn.textSize = 32;
+        game_10_btn.textColor = "#000000";
+        game_10_btn.textFont = game_font;
+        game_10_btn.textScaled = false;
+
+        game_10_btn.onHover = function(){
+            console.log("The cursor is over me!");
+        }
+
+        game_10_btn.onRelease = function(){
+            console.log("Button released!");
+            gameState = 'game'
+            setup();
+    //        draw();
+        }
+        
+        repos_btn();
+        
+    }
+
     
-    add_make_tile();
-    make_head_kick();
-    make_bot_head_kick();
-    net_setup();
-    setup_scoreboard();
     
-    platform_setup();
+    if (gameState === 'game'){
+        mm_sd.stop();
+        stadium_sd.amp(0.3);
+        stadium_sd.play();
+        //add power up
+//        random_x_val_bonus = random(350, width-350);
+//        bonus_sprite = createSprite(random_x_val_bonus, 325);
+//        bonus_sprite.addAnimation('powerup', './assets/bonus_1.png', './assets/bonus_2.png');
+//        power_up_arr.push(bonus_sprite)
+//        create_power_up(power_up_arr)
+//        power_up_arr.splice( (power_up_arr.lenght)-1 , 1)
+        
+//        create_power_up(power_up_arr);
     
+        //add base tile
+        add_make_tile();
+
+        //add new football
+        for(let i = 0; i < 1; i++){
+            football_sprite = new FootballSprite(width/2, 250);
+            football_arr.push(football_sprite);
+        }
+
+        //add player and bot head
+        player_head_sprite = new HeadSprite(100, height-120);
+        bot_head_sprite = new HeadSprite(width-160, height-120);
+
+        
+
+        //add nets 
+        net_setup();
+        
+        //add scoreboard
+        setup_scoreboard();
+
+        //add 
+        platform_setup();
+
+
+
+
+        player_head_sprite.show();
+        bot_head_sprite.bot_show();
+
+    }
     
-    make_football();   
 
 }
 
@@ -118,23 +265,204 @@ function setup() {
 
 
 function draw() {
-    background(bg);
     
-    head_kick_draw();
-    draw_football();;
-    net_draw();
+//    repos_btn();
     
-    bonus_draw();
-    
-    drawSprites();
-    draw_scoreboard();
-    
+    if (gameState === 'start') {
+
+        drawStartMenu();
+    } 
+    else if (gameState === 'game') {
+                
+        draw_10_Game();
+    }
+//    else if (gameState === 'game_1') {
+//        draw_timer_Game();
+//    }
     
 }
 
 
 
 
+function drawStartMenu(){
+    background(0);
+    
+    game_10_btn.draw();
+
+}
+
+
+
+
+function draw_10_Game(){
+    background(bg);
+    
+
+    
+    if(football_arr.length == 0){
+        for(let i = 0; i < 1; i++){
+            football_sprite = new FootballSprite(width/2, 200);
+            ball_gravity = 0.3;
+            football_arr.push(football_sprite);
+        }
+    }  
+    
+//    ball_gravity = 0.3;
+    football_sprite.move(ball_gravity);
+    
+//    console.log("head speed: " + head_acc);
+    player_head_sprite.move(head_acc);
+    
+    football_sprite.sprite.bounce(player_head_sprite.sprite);
+    football_sprite.sprite.bounce(bot_head_sprite.sprite);
+
+    
+    
+    
+    
+    net_draw();
+    
+//    bonus_draw();
+    
+//    print(power_up_arr.length);
+    
+//            create_power_up(power_up_arr)
+        
+    
+    
+//    console.log(football_sprite.sprite.position.y);
+    if(football_sprite.sprite.position.y >windowHeight-94) {
+        ball_bounce_sd.play()
+      }
+    
+    if(football_sprite.sprite.collide(leftnet_top_pole) || football_sprite.sprite.collide(leftnet_bottom_pole) || football_sprite.sprite.collide(rightnet_bottom_pole)|| football_sprite.sprite.collide(rightnet_top_pole)) {
+//        goal_post_sd.amp(0.4);
+        goal_post_sd.play();
+      }
+    
+              
+    if(power_up_arr.length === 0){
+        if (millis() - lastTrigger_3 >= 10000 ) {
+            create_power_up(power_up_arr);
+            lastTrigger_3 = millis(); 
+        }
+    }
+    
+    if(timerValue < 10 && timerValue > 0){
+        head_acc = 0;
+        push();
+        textSize(14);
+        text("0:" + timerValue, player_head_sprite.sprite.position.x, player_head_sprite.sprite.position.y-50);
+        pop();
+       }else{head_acc = 7;}
+    
+    if(power_up_arr.length >= 1){
+        // remove power up from arr and change ball gravity
+        if(football_sprite.sprite.collide(bonus_sprite)){
+            
+            if(power_up_type === "basketball"){
+               console.log("im bouncy");
+                ball_gravity = 0.1;
+                football_sprite.sprite.changeImage('basketball');
+            }
+             if(power_up_type === "frozen"){
+                 head_acc = 0;
+                 console.log("im frozen");  
+                 var timer_int_1 = setInterval(() => {if (timerValue > 0) {timerValue--;}}, 1000);      
+            }
+            if(power_up_type === "normal"){
+                console.log("im normal");
+                ball_gravity = 0.3;
+                football_sprite.sprite.changeImage('football');
+            }
+            
+            removeSprite(bonus_sprite)
+            power_up_arr.splice( (power_up_arr.lenght)-1 , 1);
+                    timerValue = 10;
+        }   
+    }
+    
+
+    
+
+    
+    
+    for(let w = 0; w < football_arr.length; w++) {
+        
+        if(football_sprite.sprite.collide(player_head_sprite.sprite) || football_sprite.sprite.collide(bot_head_sprite.sprite) || player_head_sprite.sprite.collide(football_sprite.sprite) || bot_head_sprite.sprite.collide(football_sprite.sprite)){
+            ball_kick_sound.play();
+            break;
+        }
+
+        // if player1 scores
+        if(football_sprite.sprite.collide(rightnet_right_pole)){
+            goal_scream_sd.play();
+            goal_whis_sd.play(); 
+            removeSprite(football_sprite.sprite)
+          football_arr.splice(w,1);
+          player1_score++;
+            
+            
+          break;
+        }
+        
+        // if player2 scores
+        if(football_sprite.sprite.collide(leftnet_left_pole)){
+                        goal_scream_sd.play();
+            goal_whis_sd.play(); 
+            removeSprite(football_sprite.sprite)
+            football_arr.splice(w,1);
+            player2_score++;
+            break;
+        }
+        
+        if(football_sprite.sprite.position.y > windowHeight-10){
+          football_arr.splice(w,1);
+          break;
+        }
+        
+        
+      }
+    
+    
+    drawSprites();
+    draw_scoreboard();
+    
+    
+    if(player1_score===10 || player2_score===10){
+       resetGame();
+        
+        gameState = 'start';
+        clear();
+//        removeSprites();
+       }
+    
+    
+}
+
+
+
+//function draw_timer_Game(){
+//    
+//}
+
+
+
+function repos_btn(){
+//    console.log(width/2);
+    game_10_btn.locate( (width/2-150) , 200);
+//    game_10_btn.x = width/2-150;
+    game_10_btn.draw();
+
+}
+
+
+
+
 function windowResized() {
+//    console.log("sdfds");
+//    console.log(windowWidth, width);
     resizeCanvas(windowWidth, windowHeight);
+    repos_btn();
 }
