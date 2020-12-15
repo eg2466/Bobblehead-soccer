@@ -6,7 +6,7 @@ class FootballSprite {
         this.y = this.sprite.position.y;
         this.sprite.setSpeed(10, 90);
         this.sprite.scale = 0.6;
-        this.sprite.mass = 7;
+        this.sprite.mass = 50;
         this.sprite.addImage('football', fb_img);
         this.sprite.addImage('basketball', bb_img);
         this.sprite.setCollider('circle', 0, 0, 20);

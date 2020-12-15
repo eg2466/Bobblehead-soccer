@@ -15,6 +15,10 @@ let platform_1;
 let platform_tile;
 
 let timerValue = 10;
+
+let winning_sprite;
+let losing_sprite;
+let winlose_sprite;
     
 //left net
 let leftnet_left_pole_img;
@@ -112,6 +116,9 @@ function preload(){
     
     tile_img = loadImage('./assets/Tile.png');
     
+//    winning_sprite = loadAnimation('./assets/endgame/win_1.png', './assets/endgame/win_2.png');
+//    losing_sprite = loadAnimation('./assets/endgame/lose_1.png', './assets/endgame/lose_2.png');
+    
     green_head_img = loadImage('./assets/green_head.png');
     red_head_img = loadImage('./assets/red_head.png');
     
@@ -180,8 +187,8 @@ function setup() {
 //    print("window " + windowHeight);  
     
     if (gameState === 'start'){
+        mm_sd.amp(0.3);
         mm_sd.play();
-//        createCanvas(windowWidth, windowHeight);
         game_10_btn = new Clickable();
         game_10_btn.resize(300, 100)
         game_10_btn.cornerRadius = 10;
@@ -201,9 +208,8 @@ function setup() {
 
         game_10_btn.onRelease = function(){
             console.log("Button released!");
-            gameState = 'game'
+            gameState = 'game';
             setup();
-    //        draw();
         }
         
         repos_btn();
@@ -217,21 +223,13 @@ function setup() {
         stadium_sd.amp(0.3);
         stadium_sd.play();
         //add power up
-//        random_x_val_bonus = random(350, width-350);
-//        bonus_sprite = createSprite(random_x_val_bonus, 325);
-//        bonus_sprite.addAnimation('powerup', './assets/bonus_1.png', './assets/bonus_2.png');
-//        power_up_arr.push(bonus_sprite)
-//        create_power_up(power_up_arr)
-//        power_up_arr.splice( (power_up_arr.lenght)-1 , 1)
-        
-//        create_power_up(power_up_arr);
     
         //add base tile
         add_make_tile();
 
         //add new football
         for(let i = 0; i < 1; i++){
-            football_sprite = new FootballSprite(width/2, 250);
+            football_sprite = new FootballSprite(random(width/2-10, width/2+10), 250);
             football_arr.push(football_sprite);
         }
 
@@ -258,6 +256,47 @@ function setup() {
 
     }
     
+    
+    
+    if (gameState === 'game_end'){
+        
+        
+        winlose_sprite = createSprite(width/2-10, 150);
+        winlose_sprite.addAnimation('win', './assets/endgame/win_1.png', './assets/endgame/win_2.png');
+        winlose_sprite.addAnimation('lose', './assets/endgame/lose_1.png', './assets/endgame/lose_2.png');
+        
+        mm_btn = new Clickable();
+        mm_btn.resize(280, 70)
+        mm_btn.cornerRadius = 10;
+        mm_btn.strokeWeight = 2;
+        mm_btn.stroke = "#ffffff"; 
+        mm_btn.color = "#ffffff";
+
+        mm_btn.text = "MAIN MENU";
+        mm_btn.textSize = 32;
+        mm_btn.textColor = "#000000";
+        mm_btn.textFont = game_font;
+        mm_btn.locate( (width/2-140) , height/2+50);
+        
+        mm_btn.onRelease = function(){
+            console.log("Button released!");
+//            removeSprites();
+            removeSprite(winlose_sprite);
+            removeSprite(player_head_sprite.sprite);
+            removeSprite(bot_head_sprite.sprite);
+            removeSprite(football_sprite.sprite);
+            remove_net();
+            btm_tile.removeSprites();
+            platform_tile.removeSprites();
+            clear();
+            
+            
+            resetGame();
+            setup();
+        }
+//        
+    }
+    
 
 }
 
@@ -269,11 +308,12 @@ function draw() {
 //    repos_btn();
     
     if (gameState === 'start') {
-
         drawStartMenu();
     } 
-    else if (gameState === 'game') {
-                
+    else if (gameState === 'game_end') {  
+        draw_end_Game();
+    }
+    else if (gameState === 'game') {  
         draw_10_Game();
     }
 //    else if (gameState === 'game_1') {
@@ -289,6 +329,35 @@ function drawStartMenu(){
     background(0);
     
     game_10_btn.draw();
+}
+
+
+
+
+
+function draw_end_Game(){
+    background(0);
+    mm_btn.draw();
+    
+    fill(0)
+//        background(0)
+        push()
+            textSize(60)
+            fill(255, 0 ,0)
+            if(player1_score < player2_score){
+                text("You Lose!", width/2, height/2-30);
+                winlose_sprite.changeAnimation("lose")
+            }
+            fill(0, 255 ,0)
+            if(player1_score > player2_score){
+                text("You Win!", width/2, height/2-30);
+                winlose_sprite.changeAnimation("win")
+//                animation(losing_sprite, width/2-20, 250);
+            }
+        
+        pop()
+
+    drawSprites();
 
 }
 
@@ -302,7 +371,7 @@ function draw_10_Game(){
     
     if(football_arr.length == 0){
         for(let i = 0; i < 1; i++){
-            football_sprite = new FootballSprite(width/2, 200);
+            football_sprite = new FootballSprite(random(width/2-10, width/2+10), 200);
             ball_gravity = 0.3;
             football_arr.push(football_sprite);
         }
@@ -314,6 +383,8 @@ function draw_10_Game(){
 //    console.log("head speed: " + head_acc);
     player_head_sprite.move(head_acc);
     
+    bot_head_sprite.bot_move(football_sprite);
+    
     football_sprite.sprite.bounce(player_head_sprite.sprite);
     football_sprite.sprite.bounce(bot_head_sprite.sprite);
 
@@ -321,13 +392,8 @@ function draw_10_Game(){
     
     
     
-    net_draw();
-    
-//    bonus_draw();
-    
-//    print(power_up_arr.length);
-    
-//            create_power_up(power_up_arr)
+//    net_draw();
+
         
     
     
@@ -363,28 +429,32 @@ function draw_10_Game(){
             
             if(power_up_type === "basketball"){
                console.log("im bouncy");
+                timerValue = 0;
+                clearInterval(timer_int_1);
                 ball_gravity = 0.1;
                 football_sprite.sprite.changeImage('basketball');
             }
              if(power_up_type === "frozen"){
                  head_acc = 0;
                  console.log("im frozen");  
-                 var timer_int_1 = setInterval(() => {if (timerValue > 0) {timerValue--;}}, 1000);      
+                 var timer_int_1 = setInterval(() => {if (timerValue > 0) {timerValue--;}}, 1000);   
             }
             if(power_up_type === "normal"){
                 console.log("im normal");
+                timerValue = 0;
+                clearInterval(timer_int_1);
                 ball_gravity = 0.3;
                 football_sprite.sprite.changeImage('football');
             }
             
-            removeSprite(bonus_sprite)
+            removeSprite(bonus_sprite);
             power_up_arr.splice( (power_up_arr.lenght)-1 , 1);
                     timerValue = 10;
         }   
     }
     
 
-    
+
 
     
     
@@ -396,7 +466,7 @@ function draw_10_Game(){
         }
 
         // if player1 scores
-        if(football_sprite.sprite.collide(rightnet_right_pole)){
+        if(football_sprite.sprite.collide(rightnet_right_pole) || ((football_sprite.sprite.position.x > width-30) && (football_sprite.sprite.position.y> height-260)) ){
             goal_scream_sd.play();
             goal_whis_sd.play(); 
             removeSprite(football_sprite.sprite)
@@ -407,9 +477,11 @@ function draw_10_Game(){
           break;
         }
         
+//        console.log(football_sprite.sprite.position.x);
+        
         // if player2 scores
-        if(football_sprite.sprite.collide(leftnet_left_pole)){
-                        goal_scream_sd.play();
+        if(football_sprite.sprite.collide(leftnet_left_pole) || ((football_sprite.sprite.position.x < 30) && (football_sprite.sprite.position.y> height-260)) ){
+            goal_scream_sd.play();
             goal_whis_sd.play(); 
             removeSprite(football_sprite.sprite)
             football_arr.splice(w,1);
@@ -429,14 +501,20 @@ function draw_10_Game(){
     drawSprites();
     draw_scoreboard();
     
+
     
-    if(player1_score===10 || player2_score===10){
-       resetGame();
+    if(player1_score === 10 || player2_score === 10){
+
+//        remove(player_head_sprite.sprite);
+//        remove(bot_head_sprite.sprite);
+//        resetGame();
         
-        gameState = 'start';
-        clear();
-//        removeSprites();
-       }
+        gameState = 'game_end';
+        setup();
+//        if()
+//        clear();
+        
+    }
     
     
 }

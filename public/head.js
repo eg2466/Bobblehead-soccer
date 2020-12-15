@@ -49,8 +49,8 @@ class HeadSprite {
     
     bot_show(){
 //        this.sprite.mirrorX(-1);
-        this.sprite.addAnimation('kick', player_kick_1);
-        this.sprite.addAnimation('stand', player_stand_1);
+        this.sprite.addAnimation('kick_1', player_kick_1);
+        this.sprite.addAnimation('stand_1', player_stand_1);
     }
     
     
@@ -91,6 +91,90 @@ class HeadSprite {
         if(keyDown('left') && (this.sprite.position.x > 30)) {
             this.sprite.velocity.x = -acc;
         }
+    }
+    
+    
+    //Bot AI
+        bot_move(ball){
+//        print(this.sprite.position.y)
+        this.sprite.changeAnimation('stand_1');
+        this.sprite.velocity.x = 0;
+    
+        this.sprite.velocity.y += .6;
+    
+        if(this.sprite.collide(btm_tile)) {
+            this.sprite.velocity.y = 0;
+            this.sprite.position.y -= 0.5;
+        }
+
+
+        if(this.sprite.collide(leftnet_top_pole) || this.sprite.collide(rightnet_top_pole)) {
+            this.sprite.velocity.y = 0;
+        }
+        
+
+
+        //kick the ball
+            let pos_val = map(ball.sprite.position.x, width/2+10, width-100, width/2, width-90);
+//            console.log(pos_val)
+            
+            if(this.sprite.position.x === width/2+40 ){
+               this.sprite.velocity.x = 0;
+            }
+            
+            if(this.sprite.position.x === width-90 ){
+               this.sprite.velocity.x = 0;
+            }
+            
+//            while(ball.sprite.position.x === pos_val){
+//                this.sprite.velocity.x = 7;
+//            }
+            
+//             if( (ball.sprite.position.x < this.sprite.position.x-50) ) {
+////            console.log(ball.sprite.position.x, this.sprite.position.x)
+//            this.sprite.changeAnimation('kick_1');
+//            this.sprite.velocity.x = -7;
+//            
+//            if(this.sprite.position.x > width/2 + 50 && this.sprite.position.x < width/2 + 60){
+//               this.sprite.velocity.x = 0;
+//            }
+//            
+//        }
+            
+            if(ball.sprite.position.x < this.sprite.position.x && ball.sprite.position.x > width/2-10){
+//                while(this.sprite.position.x < width/2){
+                      this.sprite.velocity.x = -8;
+//                      }
+//                this.sprite.velocity.x = 0;
+            }
+            
+            if(ball.sprite.position.x > this.sprite.position.x){
+//                while(this.sprite.position.x < width/2){
+                      this.sprite.velocity.x = 8;
+//                      }
+//                this.sprite.velocity.x = 0;
+            }
+            
+            
+            if( (ball.sprite.position.x > width-140 && ball.sprite.position.x < width-90 && this.sprite.position.y>height-250) || ((ball.sprite.position.x > width/2 && ball.sprite.position.x < width/2+10 && this.sprite.position.y>height-250)) ){
+//                while(this.sprite.position.x < width/2){
+                      this.sprite.velocity.y = -10;
+//                      }
+//                this.sprite.velocity.x = 0;
+            }
+            
+//                if( (ball.sprite.position.x < this.sprite.position.x+50) ) {
+////            console.log(ball.sprite.position.x, this.sprite.position.x)
+//            this.sprite.changeAnimation('kick_1');
+//            this.sprite.velocity.x = 7;
+//            
+////            if(this.sprite.position.x > width-100 && this.sprite.position.x < width-90){
+//                    if(this.sprite.position.x === width-90){
+//               this.sprite.velocity.x = 0;
+//            }
+//        }
+
+
     }
     
 }

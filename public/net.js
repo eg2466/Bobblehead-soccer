@@ -57,7 +57,21 @@ function net_setup() {
 
 
 
-function net_draw() {
+function remove_net() {
+    
+    removeSprite(leftnet_net);
+    removeSprite(leftnet_left_pole);
+    removeSprite(leftnet_bottom_pole);
+    removeSprite(leftnet_top_pole);
+    removeSprite(leftnet_right_pole);
+    
+    removeSprite(rightnet_net);
+    removeSprite(rightnet_right_pole);
+    removeSprite(rightnet_bottom_pole);
+    removeSprite(rightnet_top_pole);
+    removeSprite(rightnet_left_pole);
+    
+    
     
 //    leftnet_left_pole.velocity.x = 0;
 //    leftnet_left_pole.velocity.y = 0;

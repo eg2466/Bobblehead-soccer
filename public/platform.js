@@ -14,7 +14,7 @@ function platform_setup() {
         platform = createSprite((width-300+(j) ), 150+(j), 50, 50);
 //        platform.addImage('tile', tile_img);
         platform.immovable = true;
-        platform.scale = 0.5;
+        platform.scale = 0.7;
           platform.shapeColor = 0;
         platform_tile.add(platform);
       }
@@ -25,7 +25,7 @@ function platform_setup() {
         platform = createSprite((200+(j) ), 270-(j), 50, 50);
 //        platform.addImage('tile', tile_img);
         platform.immovable = true;
-        platform.scale = 0.5;
+        platform.scale = 0.7;
           platform.shapeColor = 0;
         platform_tile.add(platform);
       }
