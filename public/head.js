@@ -143,6 +143,7 @@ class HeadSprite {
             
             if(ball.sprite.position.x < this.sprite.position.x && ball.sprite.position.x > width/2-10){
 //                while(this.sprite.position.x < width/2){
+                this.sprite.changeAnimation('kick_1');
                       this.sprite.velocity.x = -8;
 //                      }
 //                this.sprite.velocity.x = 0;
@@ -150,6 +151,7 @@ class HeadSprite {
             
             if(ball.sprite.position.x > this.sprite.position.x){
 //                while(this.sprite.position.x < width/2){
+//                this.sprite.changeAnimation('kick_1');
                       this.sprite.velocity.x = 8;
 //                      }
 //                this.sprite.velocity.x = 0;
