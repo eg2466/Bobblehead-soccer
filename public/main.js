@@ -57,7 +57,12 @@ let bonus_sprite;
 let bonus_2_img;
 let power_up_arr = [];
 
+let main_bkg;
+let htp_bkg;
+
 let bb_img;
+let htp_img;
+let htp_img_1;
 
 let lastTrigger_3 = 0 ;
 
@@ -121,14 +126,20 @@ function preload(){
     
     //-------------------------- IMAGES -------------------------
     bg = loadImage('./assets/bkg.png');
+    bg_1 = loadImage('./assets/bkg_1.png');
     
     tile_img = loadImage('./assets/Tile.png');
-    
+//    htp_img = loadImage('./assets/htp.png');
+    htp_img = loadAnimation('./assets/htp.png', './assets/htp_1.png');
+    htp_img_1 = loadAnimation('./assets/htp_3.png');
 //    winning_sprite = loadAnimation('./assets/endgame/win_1.png', './assets/endgame/win_2.png');
 //    losing_sprite = loadAnimation('./assets/endgame/lose_1.png', './assets/endgame/lose_2.png');
     
     green_head_img = loadImage('./assets/green_head.png');
     red_head_img = loadImage('./assets/red_head.png');
+    
+    main_bkg = loadImage('./assets/main_bkg.png');
+    htp_bkg = loadImage('./assets/bkg_4.png');
     
     fb_img = loadImage('./assets/SoccerBall.png');
     bb_img = loadImage('./assets/basketBall.png');
@@ -195,12 +206,14 @@ function setup() {
 //    print("window " + windowHeight);  
     
     if (gameState === 'start'){
-        mm_sd.amp(0.3);
+        mm_sd.amp(0.2);
 //        stadium_sd.stop();
         mm_sd.play();
+        
+        
         game_10_btn = new Clickable();
-        game_10_btn.resize(300, 100)
-        game_10_btn.locate((width/2-150) , 200)
+        game_10_btn.resize(280, 80)
+        game_10_btn.locate((width/2-350) , 230)
         game_10_btn.cornerRadius = 10;
         game_10_btn.strokeWeight = 2;
         game_10_btn.stroke = "#ffffff"; 
@@ -212,10 +225,6 @@ function setup() {
         game_10_btn.textFont = game_font;
         game_10_btn.textScaled = false;
 
-        game_10_btn.onHover = function(){
-            console.log("The cursor is over me!");
-        }
-
         game_10_btn.onRelease = function(){
             console.log("Button released!");
             gameState = 'game';
@@ -223,9 +232,10 @@ function setup() {
         }
         
         
+        
         game_timed_btn = new Clickable();
-        game_timed_btn.resize(300, 100)
-        game_timed_btn.locate((width/2-150) , 350)
+        game_timed_btn.resize(280, 80)
+        game_timed_btn.locate((width/2-350) , 325)
         game_timed_btn.cornerRadius = 10;
         game_timed_btn.strokeWeight = 2;
         game_timed_btn.stroke = "#ffffff"; 
@@ -240,6 +250,49 @@ function setup() {
         game_timed_btn.onRelease = function(){
             console.log("Button released!");
             gameState = 'game_1';
+            setup();
+        }
+        
+        
+        
+        online_game_btn = new Clickable();
+        online_game_btn.resize(280, 80)
+        online_game_btn.locate((width/2-350) , 420)
+        online_game_btn.cornerRadius = 10;
+        online_game_btn.strokeWeight = 2;
+        online_game_btn.stroke = "#ffffff"; 
+        online_game_btn.color = "#ffffff";
+
+//        online_game_btn.text = createA("https://www.geeksforgeeks.org/", "Go to GeeksforGeeks", "_blank");
+        online_game_btn.text = "MULTIPLAYER";
+        online_game_btn.textSize = 32;
+        online_game_btn.textColor = "#000000";
+        online_game_btn.textFont = game_font;
+        online_game_btn.textScaled = false;
+        
+        
+        online_game_btn.onRelease = function(){
+            window.open("http://www.google.com");
+        }
+        
+        
+                
+        htp_btn = new Clickable();
+        htp_btn.resize(280, 80)
+        htp_btn.locate((width/2+70) , 420)
+        htp_btn.cornerRadius = 10;
+        htp_btn.strokeWeight = 2;
+        htp_btn.stroke = "#ffffff"; 
+        htp_btn.color = "#ffffff";
+
+        htp_btn.text = "HOW TO PLAY";
+        htp_btn.textSize = 32;
+        htp_btn.textColor = "#000000";
+        htp_btn.textFont = game_font;
+        htp_btn.textScaled = false;
+
+        htp_btn.onRelease = function(){
+            gameState = 'how_to_play';
             setup();
         }
         
@@ -371,6 +424,29 @@ function setup() {
 //        
     }
     
+    
+    if(gameState === 'how_to_play'){
+        mainm_btn = new Clickable();
+        mainm_btn.resize(70, 70)
+        mainm_btn.locate(50 , 35)
+        mainm_btn.cornerRadius = 10;
+        mainm_btn.strokeWeight = 2;
+        mainm_btn.stroke = "#ffffff"; 
+        mainm_btn.color = "#ffffff";
+
+        mainm_btn.text = "<";
+        mainm_btn.textSize = 32;
+        mainm_btn.textColor = "#000000";
+        mainm_btn.textFont = game_font;
+        mainm_btn.textScaled = false;
+
+        mainm_btn.onRelease = function(){
+            mm_sd.stop();
+            gameState = 'start';
+            setup();
+        } 
+    }
+    
 
 }
 
@@ -393,17 +469,45 @@ function draw() {
     else if (gameState === 'game_1') {
         draw_timer_Game();
     }
+    else if (gameState === 'how_to_play') {
+        howtoplay();
+    }
     
 }
 
 
 
 
+function howtoplay(){
+    background(htp_bkg);
+    mainm_btn.draw();
+}
+
 function drawStartMenu(){
-    background(0);
+    background(main_bkg);
+    
+    push();
+            fill(255)
+        textSize(80);
+        text("BOBBLEHEAD SOCCER", width/2-10, 80);
+    
+        textSize(50);
+        text("GAME MODES", width/2-210, 190);
+    stroke(255)
+    strokeWeight(1)
+    line(width/2, 180, width/2, height-140);
+    pop();
+    
+    animation(htp_img_1, width/2+200, 290);
+    
+    htp_btn.onHover = function(){
+        animation(htp_img, width/2+200, 290);
+    }
     
     game_10_btn.draw();
     game_timed_btn.draw();
+    htp_btn.draw();
+    online_game_btn.draw();
 }
 
 
@@ -451,7 +555,7 @@ function draw_end_Game(){
 
 
 function draw_10_Game(){
-    background(bg);
+    background(bg_1);
     
 
     
