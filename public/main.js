@@ -198,6 +198,11 @@ function preload(){
 }
 
 
+function touchStarted() {
+  if (getAudioContext().state !== 'running') {
+    getAudioContext().resume();
+  }
+}
 
 
 function setup() {
@@ -214,7 +219,7 @@ function setup() {
         mm_sd.amp(0.2);
         
         mm_sd.play();
-        getAudioContext().resume();
+//        getAudioContext().resume();
 //        mm_sd.amp(0.2);
 //        mm_sd.play();
         
@@ -675,7 +680,7 @@ function draw_10_Game(){
         }
 
         // if player1 scores
-        if(football_sprite.sprite.collide(rightnet_right_pole) || ((football_sprite.sprite.position.x > width-28) && (football_sprite.sprite.position.y> height-260)) ){
+        if(football_sprite.sprite.collide(rightnet_right_pole) || ((football_sprite.sprite.position.x > width-28) && (football_sprite.sprite.position.y> height-250)) ){
             goal_scream_sd.play();
             goal_whis_sd.play(); 
             removeSprite(football_sprite.sprite)
@@ -689,7 +694,7 @@ function draw_10_Game(){
 //        console.log(football_sprite.sprite.position.x);
         
         // if player2 scores
-        if(football_sprite.sprite.collide(leftnet_left_pole) || ((football_sprite.sprite.position.x < 28) && (football_sprite.sprite.position.y> height-260)) ){
+        if(football_sprite.sprite.collide(leftnet_left_pole) || ((football_sprite.sprite.position.x < 28) && (football_sprite.sprite.position.y> height-250)) ){
             goal_scream_sd.play();
             goal_whis_sd.play(); 
             removeSprite(football_sprite.sprite)
