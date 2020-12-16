@@ -278,7 +278,7 @@ function setup() {
         
         
         online_game_btn.onRelease = function(){
-            window.open("https://wiry-succulent-playroom.glitch.me");
+            window.open("https://bobblehead-soccer-online.glitch.me");
         }
         
         
