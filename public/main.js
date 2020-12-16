@@ -877,7 +877,7 @@ function draw_timer_Game(){
 
 function repos_btn(){
 
-    game_10_btn.draw();
+//    game_10_btn.draw();
 
 }
 
