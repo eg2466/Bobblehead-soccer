@@ -617,6 +617,7 @@ function draw_10_Game(){
         head_acc = 0;
         push();
         textSize(14);
+        fill(255, 0, 0)
         text("0:" + timerValue, player_head_sprite.sprite.position.x, player_head_sprite.sprite.position.y-50);
         pop();
        }else if(timerValue === 0){

@@ -4,9 +4,9 @@ class FootballSprite {
         this.sprite = createSprite(x, y);
         this.x = this.sprite.position.x;
         this.y = this.sprite.position.y;
-        this.sprite.setSpeed(5, 90);
+        this.sprite.setSpeed(4, 90);
         this.sprite.scale = 0.6;
-        this.sprite.mass = 1;
+        this.sprite.mass = 500;
         this.sprite.addImage('football', fb_img);
         this.sprite.addImage('basketball', bb_img);
         this.sprite.setCollider('circle', 0, 0, 20);

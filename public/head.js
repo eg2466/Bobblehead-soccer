@@ -37,6 +37,7 @@ class HeadSprite {
         this.y = this.sprite.position.y;
         this.sprite.setCollider('circle', 0, 0, 35);
         this.sprite.scale = 0.9;
+        this.sprite.mass = 10;
         this.sprite.immovable = true;
     }
     
