@@ -198,19 +198,19 @@ function preload(){
 }
 
 
-//function touchStarted() {
-//  if (getAudioContext().state !== 'running') {
-//    getAudioContext().resume();
-//  }
-//}
+function touchStarted() {
+  if (getAudioContext().state !== 'running') {
+    getAudioContext().resume();
+  }
+}
 
 
 function setup() {
 
     createCanvas(windowWidth, windowHeight);
-      if (getAudioContext().state !== 'running') {
-    getAudioContext().resume();
-  }
+//      if (getAudioContext().state !== 'running') {
+//    getAudioContext().resume();
+//  }
     
 //    print("window " + windowHeight);  
     

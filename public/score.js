@@ -16,7 +16,7 @@ function draw_scoreboard() {
         image(red_head_img, width/2-105, 12);
 
 
-        text(":", width/2, 35)
+        
 
         //right scoreboard
         rect(width/2+50, 35, 65, 50, 10);
@@ -24,6 +24,7 @@ function draw_scoreboard() {
 
         fill(255);
         textSize(32);
+    text(":", width/2-10, 45)
         text(player1_score, width/2-50, 45);
         text(player2_score, width/2+30, 45);
     pop();
