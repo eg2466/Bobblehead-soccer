@@ -203,12 +203,18 @@ function preload(){
 function setup() {
 
     createCanvas(windowWidth, windowHeight);
+    
+    
 //    print("window " + windowHeight);  
     
+
+    
     if (gameState === 'start'){
+        textFont(game_font);
         mm_sd.amp(0.2);
-//        stadium_sd.stop();
         mm_sd.play();
+//        mm_sd.amp(0.2);
+//        mm_sd.play();
         
         
         game_10_btn = new Clickable();
@@ -296,7 +302,7 @@ function setup() {
             setup();
         }
         
-        repos_btn();
+//        repos_btn();
         
     }
 
@@ -483,16 +489,18 @@ function howtoplay(){
     mainm_btn.draw();
 }
 
+
+
 function drawStartMenu(){
     background(main_bkg);
     
     push();
             fill(255)
         textSize(80);
-        text("BOBBLEHEAD SOCCER", width/2-10, 80);
+        text("BOBBLEHEAD SOCCER", width/2-450, 80);
     
         textSize(50);
-        text("GAME MODES", width/2-210, 190);
+        text("GAME MODES", width/2-380, 190);
     stroke(255)
     strokeWeight(1)
     line(width/2, 180, width/2, height-140);
