@@ -272,7 +272,7 @@ function setup() {
         
         
         online_game_btn.onRelease = function(){
-            window.open("https://well-calico-hare.glitch.me");
+            window.open("https://wiry-succulent-playroom.glitch.me");
         }
         
         
