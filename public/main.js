@@ -475,6 +475,7 @@ function draw() {
     if (gameState === 'start') {
         drawStartMenu();
     } 
+    
     else if (gameState === 'game_end') {  
         draw_end_Game();
     }
