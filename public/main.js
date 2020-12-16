@@ -212,7 +212,9 @@ function setup() {
     if (gameState === 'start'){
         textFont(game_font);
         mm_sd.amp(0.2);
+        
         mm_sd.play();
+        getAudioContext().resume();
 //        mm_sd.amp(0.2);
 //        mm_sd.play();
         
