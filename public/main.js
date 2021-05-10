@@ -293,7 +293,7 @@ function setup() {
         
                 
         htp_btn = new Clickable();
-        htp_btn.resize(280, 80)
+        htp_btn.resize(300, 80)
         htp_btn.locate((width/2+70) , 420)
         htp_btn.cornerRadius = 10;
         htp_btn.strokeWeight = 2;
@@ -310,6 +310,25 @@ function setup() {
             gameState = 'how_to_play';
             setup();
         }
+
+        acc_opt_btn = new Clickable();
+        acc_opt_btn.resize(300, 80)
+        acc_opt_btn.locate((width/2+70) , 520)
+        acc_opt_btn.cornerRadius = 10;
+        acc_opt_btn.strokeWeight = 2;
+        acc_opt_btn.stroke = "#ffffff"; 
+        acc_opt_btn.color = "#ffffff";
+
+        acc_opt_btn.text = "Accessibility";
+        acc_opt_btn.textSize = 32;
+        acc_opt_btn.textColor = "#000000";
+        acc_opt_btn.textFont = game_font;
+        acc_opt_btn.textScaled = false;
+
+        acc_opt_btn.onRelease = function(){
+            gameState = 'accessibility_options';
+            setup();
+        }
         
 //        repos_btn();
         
@@ -322,6 +341,7 @@ function setup() {
         stadium_sd.amp(0.3);
         stadium_sd.play();
         
+
     
         //add base tile
         add_make_tile();
@@ -350,6 +370,26 @@ function setup() {
         //add players
         player_head_sprite.show();
         bot_head_sprite.bot_show();
+
+        mainm_btn_1 = new Clickable();
+        mainm_btn_1.resize(50, 50)
+        mainm_btn_1.locate(50 , 35)
+        mainm_btn_1.cornerRadius = 10;
+        mainm_btn_1.strokeWeight = 2;
+        mainm_btn_1.stroke = "#ffffff"; 
+        mainm_btn_1.color = "#ffffff";
+
+        mainm_btn_1.text = "<";
+        mainm_btn_1.textSize = 32;
+        mainm_btn_1.textColor = "#000000";
+        mainm_btn_1.textFont = game_font;
+        mainm_btn_1.textScaled = false;
+
+        mainm_btn_1.onRelease = function(){
+            mm_sd.stop();
+            gameState = 'game_end';
+            setup();
+        } 
 
     }
     
@@ -393,6 +433,26 @@ function setup() {
         //add players
         player_head_sprite.show();
         bot_head_sprite.bot_show();
+
+        mainm_btn_2 = new Clickable();
+        mainm_btn_2.resize(50, 50)
+        mainm_btn_2.locate(50 , 35)
+        mainm_btn_2.cornerRadius = 10;
+        mainm_btn_2.strokeWeight = 2;
+        mainm_btn_2.stroke = "#ffffff"; 
+        mainm_btn_2.color = "#ffffff";
+
+        mainm_btn_2.text = "<";
+        mainm_btn_2.textSize = 32;
+        mainm_btn_2.textColor = "#000000";
+        mainm_btn_2.textFont = game_font;
+        mainm_btn_2.textScaled = false;
+
+        mainm_btn_2.onRelease = function(){
+            mm_sd.stop();
+            gameState = 'game_end';
+            setup();
+        } 
 
     }
     
@@ -463,6 +523,29 @@ function setup() {
     }
     
 
+    if(gameState === 'accessibility_options'){
+        mainm_btn_3 = new Clickable();
+        mainm_btn_3.resize(70, 70)
+        mainm_btn_3.locate(50 , 35)
+        mainm_btn_3.cornerRadius = 10;
+        mainm_btn_3.strokeWeight = 2;
+        mainm_btn_3.stroke = "#ffffff"; 
+        mainm_btn_3.color = "#ffffff";
+
+        mainm_btn_3.text = "<";
+        mainm_btn_3.textSize = 32;
+        mainm_btn_3.textColor = "#000000";
+        mainm_btn_3.textFont = game_font;
+        mainm_btn_3.textScaled = false;
+
+        mainm_btn_3.onRelease = function(){
+            mm_sd.stop();
+            gameState = 'start';
+            setup();
+        } 
+    }
+
+
 }
 
 
@@ -488,7 +571,9 @@ function draw() {
     else if (gameState === 'how_to_play') {
         howtoplay();
     }
-    
+    else if (gameState === 'accessibility_options') {
+        draw_accessibility();
+    }
 }
 
 
@@ -499,21 +584,27 @@ function howtoplay(){
     mainm_btn.draw();
 }
 
+function draw_accessibility(){
+    background(main_bkg);
+    mainm_btn_3.draw();
+}
+
 
 
 function drawStartMenu(){
     background(main_bkg);
     
     push();
-            fill(255)
+        fill(255)
         textSize(80);
         text("BOBBLEHEAD SOCCER", width/2-450, 80);
     
         textSize(50);
-        text("GAME MODES", width/2-380, 190);
-    stroke(255)
-    strokeWeight(1)
-    line(width/2, 180, width/2, height-140);
+        text("GAME MODES", width/2-380, 270);
+
+        stroke(255)
+        strokeWeight(1)
+        line(width/2, 180, width/2, height-140);
     pop();
     
     animation(htp_img_1, width/2+200, 290);
@@ -522,6 +613,7 @@ function drawStartMenu(){
         animation(htp_img, width/2+200, 290);
     }
     
+    acc_opt_btn.draw();
     game_10_btn.draw();
     game_timed_btn.draw();
     htp_btn.draw();
@@ -713,6 +805,7 @@ function draw_10_Game(){
         
         
       }
+      mainm_btn_1.draw();
     
     
     drawSprites();
@@ -875,7 +968,8 @@ function draw_timer_Game(){
         
       }
     
-    
+    mainm_btn_2.draw();
+
     drawSprites();
     draw_scoreboard_1();
     

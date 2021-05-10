@@ -3,7 +3,7 @@ function add_make_tile() {
 
 btm_tile = new Group();
     
-    for(var j=0; j<20; j++)
+    for(var j=0; j<30; j++)
       {
         tile = createSprite((80*j), windowHeight-40);
         tile.addImage('tile', tile_img);
